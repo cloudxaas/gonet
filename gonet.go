@@ -1,5 +1,8 @@
 package gonet
 
+import (
+	"net"
+)
 // GetLocalIP returns the non loopback local IP of the host
 // returns only 1 ip
 func NonLoopbackPrimaryIP() string {
