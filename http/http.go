@@ -7,7 +7,7 @@ import (
 
 //validate if domain name is valid including internationalized domain names
 func IsValidDomainName(domain string) bool {
-    if domain == "" || len(domain) > 255 {
+    if domain == "" || len(domain) > 128 { //128 length for domain name, are u trying to be funny?
         return false
     }
     if domain[len(domain)-1] == '.' {
