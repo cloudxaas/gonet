@@ -1,6 +1,7 @@
 package cxnetutil
 import (
-"net"
+	"net"
+	"bytes"
 )
 func IsPrivateSubnet(ipAddress net.IP) uint8 {
 	// my use case is only concerned with ipv4 atm
