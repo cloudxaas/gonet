@@ -1,4 +1,4 @@
-package ipvalidator
+package cxipvalidator
 
 func ValidateIPv4Address(ipAddress []byte) bool {
     const maxOctets = 4
