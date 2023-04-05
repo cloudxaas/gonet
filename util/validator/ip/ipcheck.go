@@ -1,7 +1,13 @@
 package cxipvalidator
 
+
+import (
+	"errors"
+	"net"
+)
+
 // ValidateIPv4Address validates the given IPv4 address in string format
-func ValidateIPv4Address(ipv4 string) uint8 {
+func IsValidIPv4String(ipv4 string) uint8 {
 	var (
 		seg     int // current segment of the IP address
 		segSize int // size of the current segment
@@ -50,7 +56,7 @@ func ValidateIPv4Address(ipv4 string) uint8 {
 }
 
 // ValidateIPv6Address validates the given IPv6 address in string format
-func ValidateIPv6Address(ipv6 string) uint8 {
+func IsValidIPv6String(ipv6 string) uint8 {
 	var (
 		hexCount int // number of hex digits in current group
 		group    int // current group of the IPv6 address
@@ -95,3 +101,41 @@ func ValidateIPv6Address(ipv6 string) uint8 {
 	return 1
 }
 
+
+
+// IsValidIPv4 checks if an IPv4 address is valid
+func IsValidIPv4(ip net.IP) uint8 {
+	if ip.To4() == nil {
+		return 0
+	}
+	return 1
+	
+}
+
+// IsValidIPv6 checks if an IPv6 address is valid
+func IsValidIPv6(ip net.IP) uint8 {
+	if ip.To4() != nil {
+		return 0
+	}
+	if ip.To16() == nil {
+		return 0
+	}
+	return 1
+}
+
+// IsValidIP checks if an IP address is valid, returns the IP version
+func IsValidIP(ip net.IP) (uint8, uint8) {
+	if ip.To4() != nil {
+		if err := IsValidIPv4(ip); err != nil {
+			return 0, 1
+		}
+		return 4, 0
+	}
+	if ip.To16() != nil {
+		if err := IsValidIPv6(ip); err != nil {
+			return 0, 1
+		}
+		return 6, 0
+	}
+	return 0, 1
+}
