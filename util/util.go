@@ -1,5 +1,7 @@
 package cxnetutil
-
+import (
+"net"
+)
 func IsPrivateSubnet(ipAddress net.IP) uint8 {
 	// my use case is only concerned with ipv4 atm
 	if ipCheck := ipAddress.To4(); ipCheck != nil {
