@@ -60,3 +60,12 @@ type IpRange struct {
 	start net.IP
 	end   net.IP
 }
+
+func ListContainsIP(ipList []net.IP, ip net.IP) bool {
+	for i := range ipList {
+		if bytes.Equal(ipList[i], ip) {
+			return true
+		}
+	}
+	return false
+}
