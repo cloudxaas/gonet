@@ -1,25 +1,25 @@
 package cxnetutil
 
-func IsPrivateSubnet(ipAddress net.IP) bool {
+func IsPrivateSubnet(ipAddress net.IP) uint8 {
 	// my use case is only concerned with ipv4 atm
 	if ipCheck := ipAddress.To4(); ipCheck != nil {
 		// iterate over all our ranges
 		for _, r := range PrivateRanges {
 			// check if this ip is in a private range
-			if InRange(r, ipAddress) {
-				return true
+			if InRange(r, ipAddress) == 1 {
+				return 1
 			}
 		}
 	}
-	return false
+	return 0
 }
 
-func InRange(r IpRange, ipAddress net.IP) bool {
+func InRange(r IpRange, ipAddress net.IP) uint8 {
 	// strcmp type byte comparison
 	if bytes.Compare(ipAddress, r.start) >= 0 && bytes.Compare(ipAddress, r.end) < 0 {
-		return true
+		return 1
 	}
-	return false
+	return 0
 }
 
 var PrivateRanges = []IpRange{
@@ -61,11 +61,11 @@ type IpRange struct {
 	end   net.IP
 }
 
-func ListContainsIP(ipList []net.IP, ip net.IP) bool {
+func ListContainsIP(ipList []net.IP, ip net.IP) uint8 {
 	for i := range ipList {
 		if bytes.Equal(ipList[i], ip) {
-			return true
+			return 1
 		}
 	}
-	return false
+	return 0
 }
