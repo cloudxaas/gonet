@@ -6,7 +6,7 @@ import (
 )
 
 // ValidateIPv4Address validates the given IPv4 address in string format
-func IsValidIPv4String(ipv4 string) uint8 {
+func IsIPv4String(ipv4 string) uint8 {
 	var (
 		seg     int // current segment of the IP address
 		segSize int // size of the current segment
@@ -55,7 +55,7 @@ func IsValidIPv4String(ipv4 string) uint8 {
 }
 
 // ValidateIPv6Address validates the given IPv6 address in string format
-func IsValidIPv6String(ipv6 string) uint8 {
+func IsIPv6String(ipv6 string) uint8 {
 	var (
 		hexCount int // number of hex digits in current group
 		group    int // current group of the IPv6 address
@@ -103,7 +103,7 @@ func IsValidIPv6String(ipv6 string) uint8 {
 
 
 // IsValidIPv4 checks if an IPv4 address is valid
-func IsValidIPv4(ip net.IP) uint8 {
+func IsIPv4(ip net.IP) uint8 {
 	if ip.To4() == nil {
 		return 0
 	}
@@ -112,7 +112,7 @@ func IsValidIPv4(ip net.IP) uint8 {
 }
 
 // IsValidIPv6 checks if an IPv6 address is valid
-func IsValidIPv6(ip net.IP) uint8 {
+func IsIPv6(ip net.IP) uint8 {
 	if ip.To4() != nil {
 		return 0
 	}
@@ -123,15 +123,15 @@ func IsValidIPv6(ip net.IP) uint8 {
 }
 
 // IsValidIP checks if an IP address is valid, returns the IP version
-func IsValidIP(ip net.IP) (uint8, uint8) {
+func IsIP(ip net.IP) (uint8, uint8) {
 	if ip.To4() != nil {
-		if IsValidIPv4(ip) != 1 {
+		if IsIPv4(ip) != 1 {
 			return 0, 1
 		}
 		return 4, 0
 	}
 	if ip.To16() != nil {
-		if IsValidIPv6(ip) != 1 {
+		if IsIPv6(ip) != 1 {
 			return 0, 1
 		}
 		return 6, 0
