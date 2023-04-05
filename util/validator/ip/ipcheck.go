@@ -2,7 +2,6 @@ package cxipvalidator
 
 
 import (
-	"errors"
 	"net"
 )
 
@@ -126,13 +125,13 @@ func IsValidIPv6(ip net.IP) uint8 {
 // IsValidIP checks if an IP address is valid, returns the IP version
 func IsValidIP(ip net.IP) (uint8, uint8) {
 	if ip.To4() != nil {
-		if err := IsValidIPv4(ip); err != nil {
+		if IsValidIPv4(ip) != 1 {
 			return 0, 1
 		}
 		return 4, 0
 	}
 	if ip.To16() != nil {
-		if err := IsValidIPv6(ip); err != nil {
+		if IsValidIPv6(ip) != 1 {
 			return 0, 1
 		}
 		return 6, 0
