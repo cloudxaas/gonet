@@ -4,30 +4,35 @@ import (
 	"bytes"
 )
 
-func AppendSortedIPNetSlices(sorted []*net.IPNet, ipnet *net.IPNet) {
-    if len(sorted) == 0 {
-        sorted = append(sorted, ipnet)
+func AppendSortedIPNetSlices(sorted *[]*net.IPNet, ipnet *net.IPNet) {
+    if len(*sorted) == 0 {
+        *sorted = append(*sorted, ipnet)
         return
     }
 
     var left, right, mid int
     left = 0
-    right = len(sorted) - 1
+    right = len(*sorted) - 1
 
     for left <= right {
         mid = left + (right-left)/2
-        if sorted[mid].Contains(ipnet.IP) {
+        if (*sorted)[mid].Contains(ipnet.IP) {
             return
-        } else if bytes.Compare(sorted[mid].IP, ipnet.IP) < 0 {
+        } else if bytes.Compare((*sorted)[mid].IP, ipnet.IP) < 0 {
             left = mid + 1
         } else {
             right = mid - 1
         }
     }
 
-    sorted = append(sorted, &net.IPNet{})
-    copy(sorted[left+1:], sorted[left:])
-    sorted[left] = ipnet
+    // Append the new IPNet to the end of the slice
+    *sorted = append(*sorted, nil)
+
+    // Shift the elements to the right of the insertion point one position to the right
+    copy((*sorted)[left+1:], (*sorted)[left:len(*sorted)-1])
+
+    // Insert the new IPNet at the insertion point
+    (*sorted)[left] = ipnet
 }
 
 func IsPrivateSubnet(ipAddress net.IP) uint8 {
