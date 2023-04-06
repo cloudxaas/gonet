@@ -107,8 +107,11 @@ func ListContainsIP(ipList []*net.IPNet, ip net.IP) uint8 {
 
 func Listv4or6ContainsIP(ipListv4 []*net.IPNet, ipListv6 []*net.IPNet, ip net.IP) uint8 {
   if Is4(ip) == 1 {
-    return ListContainsIP(ipListv4,ip)
+    return ListContainsIP(ipListv4,ip) //returns 1 if true
   }
-  return ListContainsIP(ipListv6,ip)
+	if ListContainsIP(ipListv6,ip) == 1 {
+		return 2
+	}
+  return 0
 }
 
