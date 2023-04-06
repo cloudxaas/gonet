@@ -4,7 +4,7 @@ import (
 	"bytes"
 )
 
-func AppendSortedIPNetsSlices(sorted []*net.IPNet, ipnet *net.IPNet) {
+func AppendSortedIPNetSlices(sorted []*net.IPNet, ipnet *net.IPNet) {
     if len(sorted) == 0 {
         sorted = append(sorted, ipnet)
         return
