@@ -3,7 +3,15 @@ package cxnet
 import (
 	"net"
 )
-// GetLocalIP returns the non loopback local IP of the host
+
+func IPToBytes(ip net.IP) []byte {
+    if ip4 := ip.To4(); ip4 != nil {
+        return []byte(ip4)
+    }
+    return []byte(ip.To16())
+}
+
+// NonLoopbackPrimaryIP returns the non loopback local IP of the host
 // returns only 1 ip
 func NonLoopbackPrimaryIP() string {
 	addrs, err := net.InterfaceAddrs()
