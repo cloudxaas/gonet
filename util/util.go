@@ -4,6 +4,32 @@ import (
 	"bytes"
 )
 
+func AppendSortedIPNetsSlices(sorted []*net.IPNet, ipnet *net.IPNet) {
+    if len(sorted) == 0 {
+        sorted = append(sorted, ipnet)
+        return
+    }
+
+    var left, right, mid int
+    left = 0
+    right = len(sorted) - 1
+
+    for left <= right {
+        mid = left + (right-left)/2
+        if sorted[mid].Contains(ipnet.IP) {
+            return
+        } else if bytes.Compare(sorted[mid].IP, ipnet.IP) < 0 {
+            left = mid + 1
+        } else {
+            right = mid - 1
+        }
+    }
+
+    sorted = append(sorted, &net.IPNet{})
+    copy(sorted[left+1:], sorted[left:])
+    sorted[left] = ipnet
+}
+
 func IsPrivateSubnet(ipAddress net.IP) uint8 {
 	// my use case is only concerned with ipv4 atm
 	if ipCheck := ipAddress.To4(); ipCheck != nil {
