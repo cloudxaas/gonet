@@ -3,6 +3,14 @@ import (
 	"net"
 	"bytes"
 )
+
+func IPToBytes(ip net.IP) []byte {
+    if ip4 := ip.To4(); ip4 != nil {
+        return []byte(ip4)
+    }
+    return []byte(ip.To16())
+}
+
 func IsPrivateSubnet(ipAddress net.IP) uint8 {
 	// my use case is only concerned with ipv4 atm
 	if ipCheck := ipAddress.To4(); ipCheck != nil {
