@@ -64,11 +64,12 @@ type IpRange struct {
 	end   net.IP
 }
 
-func ListContainsIP(ipList []net.IP, ip net.IP) uint8 {
-	for i := range ipList {
-		if bytes.Equal(ipList[i], ip) {
-			return 1
+func ListContainsIP(ipList []*net.IPNet, ip net.IP) uint8 {
+	for _, block := range ipList {
+		if block.Contains(ip) {
+			return 0
 		}
 	}
-	return 0
+	return 1
 }
+
