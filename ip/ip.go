@@ -56,7 +56,7 @@ func Is4String(ipv4 string) uint8 {
 
 
 
-func IPToBytes(ip net.IP) []byte {
+func ToBytes(ip net.IP) []byte {
     if ip4 := ip.To4(); ip4 != nil {
         return []byte(ip4)
     }
