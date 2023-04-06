@@ -32,3 +32,31 @@ func IsDomainName(domain string) bool {
     }
     return labelLen >= 1 && labelLen <= 63
 }
+
+
+func IPFromXFF(header []byte) net.IP {
+	if len(header) == 0 {
+		return nil
+	}
+
+	// Split the header on commas and reverse the resulting slice
+	addresses := bytes.Split(header, []byte(","))
+	for i, j := 0, len(addresses)-1; i < j; i, j = i+1, j-1 {
+		addresses[i], addresses[j] = addresses[j], addresses[i]
+	}
+
+	for _, addr := range addresses {
+		// Remove any whitespace and double quotes from the address
+		addr = bytes.TrimSpace(addr)
+		addr = bytes.TrimPrefix(addr, []byte{'"'})
+		addr = bytes.TrimSuffix(addr, []byte{'"'})
+
+		// Check if the address is a valid IP
+		ip := net.ParseIP(string(addr))
+		if ip != nil {
+			return ip
+		}
+	}
+
+	return nil
+}
