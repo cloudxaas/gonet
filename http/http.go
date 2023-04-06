@@ -3,6 +3,8 @@ package cxnethttp
 import (
     "unicode"
     "unicode/utf8"
+	"net"
+"bytes"
 )
 
 //validate if domain name is valid including internationalized domain names
