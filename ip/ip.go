@@ -63,6 +63,13 @@ func ToBytes(ip net.IP) []byte {
     return []byte(ip.To16())
 }
 
+func ToIP(bytes []byte) net.IP {
+    if len(bytes) == net.IPv4len {
+        return net.IPv4(bytes[0], bytes[1], bytes[2], bytes[3])
+    }
+    return net.IP(bytes)
+}
+
 // ValidateIPv6Address validates the given IPv6 address in string format
 func Is6String(ipv6 string) uint8 {
 	var (
