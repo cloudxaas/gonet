@@ -54,20 +54,27 @@ func Is4String(ipv4 string) uint8 {
 	return 1
 }
 
-
-
 func ToBytes(ip net.IP) []byte {
     if ip4 := ip.To4(); ip4 != nil {
-        return []byte(ip4)
+        b := make([]byte, net.IPv4len)
+        copy(b, ip4)
+        return b
     }
-    return []byte(ip.To16())
+    ip16 := ip.To16()
+    b := make([]byte, net.IPv6len)
+    copy(b, ip16)
+    return b
 }
 
 func ToIP(bytes []byte) net.IP {
     if len(bytes) == net.IPv4len {
-        return net.IPv4(bytes[0], bytes[1], bytes[2], bytes[3])
+        b := make([]byte, net.IPv4len)
+        copy(b, bytes)
+        return net.IPv4(b[0], b[1], b[2], b[3])
     }
-    return net.IP(bytes)
+    b := make([]byte, net.IPv6len)
+    copy(b, bytes)
+    return net.IP(b)
 }
 
 // ValidateIPv6Address validates the given IPv6 address in string format
