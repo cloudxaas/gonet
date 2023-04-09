@@ -47,7 +47,7 @@ func IsPrivateSubnet(ipAddress netip.Addr) uint8 {
 }
 
 func InRange(r IpRange, ipAddress netip.Addr) uint8 {
-	if r.start.Compare(ipAddress) >= 0 && ipAddress.end.Compare(r) < 0  {
+	if r.start.Compare(ipAddress) >= 0 && ipAddress.Compare(r.end) < 0  {
 		return 1
 	}
 	return 0
