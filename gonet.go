@@ -1,13 +1,14 @@
 package cxnet
 
 import (
+	"net/netip"
 	"net"
 )
 
 
 // NonLoopbackPrimaryIP returns the non loopback local IP of the host
 // returns only 1 ip
-func NonLoopbackPrimaryIP() net.IP {
+func NonLoopbackPrimaryIP() netip.Addr {
 	addrs, err := net.InterfaceAddrs()
 	if err != nil {
 		return nil
@@ -16,7 +17,8 @@ func NonLoopbackPrimaryIP() net.IP {
 		// check the address type and if it is not a loopback the display it
 		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
 			if ipnet.IP.To4() != nil {
-				return ipnet.IP
+				return netip.MustParseAddr(ipnet.IP.String())
+				//return ipnet.IP
 			}
 		}
 	}
