@@ -36,9 +36,9 @@ func IsDomainName(domain string) bool {
 }
 
 
-func IPFromXFF(header []byte) net.IP {
+func IPFromXFF(header []byte) netip.Addr {
 	if len(header) == 0 {
-		return nil
+		return netip.Addr{}
 	}
 
 	// Split the header on commas and reverse the resulting slice
@@ -54,11 +54,11 @@ func IPFromXFF(header []byte) net.IP {
 		addr = bytes.TrimSuffix(addr, []byte{'"'})
 
 		// Check if the address is a valid IP
-		ip := net.ParseIP(string(addr))
-		if ip != nil {
+		ip, err := netip.ParseAddr(string(addr))
+		if err == nil {
 			return ip
 		}
 	}
 
-	return nil
+	return netip.Addr{}
 }
