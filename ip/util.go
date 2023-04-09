@@ -36,7 +36,7 @@ func AppendSortedIPPrefixSlices(sorted *[]netip.IPPrefix, ipPrefix netip.IPPrefi
 }
 
 func IsPrivateSubnet(ipAddress netip.Addr) uint8 {
-	if ipCheck := ipAddress.As16(); ipCheck != netip.Addr{} {
+	if ipCheck := ipAddress.As16(); ipCheck != (netip.Addr{}) {
 		for _, r := range PrivateRanges {
 			if InRange(r, ipAddress) == 1 {
 				return 1
