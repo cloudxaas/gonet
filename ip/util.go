@@ -4,9 +4,9 @@ import (
 	"net/netip"
 )
 
-func AppendSortedIPPrefixSlices(sorted *[]netip.Prefix, ipPrefix netip. 	) {
+func AppendSortedNetIPSlices(sorted *[]netip.Addr, ip netip.Addr) {
 	if len(*sorted) == 0 {
-		*sorted = append(*sorted, ipPrefix)
+		*sorted = append(*sorted, ip)
 		return
 	}
 
@@ -16,23 +16,23 @@ func AppendSortedIPPrefixSlices(sorted *[]netip.Prefix, ipPrefix netip. 	) {
 
 	for left <= right {
 		mid = left + (right-left)/2
-		if (*sorted)[mid].Contains(ipPrefix.IP()) {
+		if (*sorted)[mid] == ip {
 			return
-		} else if (*sorted)[mid].IP().Less(ipPrefix.IP()) {
+		} else if (*sorted)[mid].Less(ip) {
 			left = mid + 1
 		} else {
 			right = mid - 1
 		}
 	}
 
-	// Append the new IPPrefix to the end of the slice
-	*sorted = append(*sorted, netip.Prefix{})
+	// Append a zero-value Addr to the end of the slice
+	*sorted = append(*sorted, (netip.Addr{}))
 
 	// Shift the elements to the right of the insertion point one position to the right
 	copy((*sorted)[left+1:], (*sorted)[left:len(*sorted)-1])
 
-	// Insert the new IPPrefix at the insertion point
-	(*sorted)[left] = ipPrefix
+	// Insert the new Addr at the insertion point
+	(*sorted)[left] = ip
 }
 
 func IsPrivateSubnet(ipAddress netip.Addr) uint8 {
