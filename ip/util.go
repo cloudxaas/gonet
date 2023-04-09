@@ -36,7 +36,7 @@ func AppendSortedNetIPSlices(sorted *[]netip.Addr, ip netip.Addr) {
 }
 
 func IsPrivateSubnet(ipAddress netip.Addr) uint8 {
-	if ipCheck := ipAddress.As16(); ipCheck != (netip.Addr{}) {
+	if ipCheck != (netip.Addr{}) {
 		for _, r := range PrivateRanges {
 			if InRange(r, ipAddress) == 1 {
 				return 1
@@ -47,7 +47,7 @@ func IsPrivateSubnet(ipAddress netip.Addr) uint8 {
 }
 
 func InRange(r IpRange, ipAddress netip.Addr) uint8 {
-	if ipAddress.Compare(r.start) >= 0 && ipAddress.Compare(r.end) < 0 {
+	if ipAddress >= r.start && ipAddress < r.end {
 		return 1
 	}
 	return 0
@@ -55,16 +55,16 @@ func InRange(r IpRange, ipAddress netip.Addr) uint8 {
 
 var PrivateRanges = []IpRange{
 	IpRange{
-		start: netip.ParseAddr("10.0.0.0"),
-		end:   netip.ParseAddr("10.255.255.255"),
+		start: netip.MustParseAddr("10.0.0.0"),
+		end:   netip.MustParseAddr("10.255.255.255"),
 	},
 	IpRange{
-		start: netip.ParseAddr("172.16.0.0"),
-		end:   netip.ParseAddr("172.31.255.255"),
+		start: netip.MustParseAddr("172.16.0.0"),
+		end:   netip.MustParseAddr("172.31.255.255"),
 	},
 	IpRange{
-		start: netip.ParseAddr("192.168.0.0"),
-		end:   netip.ParseAddr("192.168.255.255"),
+		start: netip.MustParseAddr("192.168.0.0"),
+		end:   netip.MustParseAddr("192.168.255.255"),
 	},
 }
 
