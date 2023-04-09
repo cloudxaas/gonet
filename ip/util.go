@@ -73,7 +73,7 @@ type IpRange struct {
 	end   netip.Addr
 }
 
-func ListContainsIP(ipList []netip.IPPrefix, ip netip.Addr) uint8 {
+func ListContainsIP(ipList []netip.Prefix, ip netip.Addr) uint8 {
 	for _, block := range ipList {
 		if block.Contains(ip) {
 			return 1
@@ -82,7 +82,7 @@ func ListContainsIP(ipList []netip.IPPrefix, ip netip.Addr) uint8 {
 	return 0
 }
 
-func Listv4or6ContainsIP(ipListv4 []netip.IPPrefix, ipListv6 []netip.IPPrefix, ip netip.Addr) uint8 {
+func Listv4or6ContainsIP(ipListv4 []netip.Prefix, ipListv6 []netip.Prefix, ip netip.Addr) uint8 {
 	if ip.Is4() {
 		if ListContainsIP(ipListv4, ip) == 1 {
 			return 1 // IPv4 and found in the list
