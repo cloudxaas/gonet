@@ -3,7 +3,7 @@ package cxnethttp
 import (
     "unicode"
     "unicode/utf8"
-	"net"
+	"netip"
 "bytes"
 )
 
