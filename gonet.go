@@ -16,7 +16,7 @@ func NonLoopbackPrimaryIP() netip.Addr {
 	for _, address := range addrs {
 		// check the address type and if it is not a loopback the display it
 		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
-			if ipnet.IP.To4() != (netip.Addr{}) {
+			if ipnet.IP.To4() != nil {
 				return netip.MustParseAddr(ipnet.IP.String())
 				//return ipnet.IP
 			}
