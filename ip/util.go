@@ -4,7 +4,7 @@ import (
 	"net/netip"
 )
 
-func AppendSortedIPPrefixSlices(sorted *[]netip.Prefix, ipPrefix netip.Prefix) {
+func AppendSortedIPPrefixSlices(sorted *[]netip.Prefix, ipPrefix netip. 	) {
 	if len(*sorted) == 0 {
 		*sorted = append(*sorted, ipPrefix)
 		return
