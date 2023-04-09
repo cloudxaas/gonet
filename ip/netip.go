@@ -102,10 +102,10 @@ func Is6String(ipv6 string) uint8 {
 
 // IsValidIP checks if an IP address is valid, returns the IP version
 func IsIP(ip netip.Addr) (uint8, uint8) {
-	if ip.Is4() != 1 {
+	if ip.Is4() {
 		return 4, 0
 	}
-	if ip.Is6() != 1 {
+	if ip.Is6() {
 		return 6, 0
 	}
 	return 0, 1
