@@ -4,7 +4,7 @@ import (
 	"net/netip"
 )
 
-func AppendSortedIPPrefixSlices(sorted *[]netip.IPPrefix, ipPrefix netip.IPPrefix) {
+func AppendSortedIPPrefixSlices(sorted *[]netip.Prefix, ipPrefix netip.Prefix) {
 	if len(*sorted) == 0 {
 		*sorted = append(*sorted, ipPrefix)
 		return
@@ -26,7 +26,7 @@ func AppendSortedIPPrefixSlices(sorted *[]netip.IPPrefix, ipPrefix netip.IPPrefi
 	}
 
 	// Append the new IPPrefix to the end of the slice
-	*sorted = append(*sorted, netip.IPPrefix{})
+	*sorted = append(*sorted, netip.Prefix{})
 
 	// Shift the elements to the right of the insertion point one position to the right
 	copy((*sorted)[left+1:], (*sorted)[left:len(*sorted)-1])
