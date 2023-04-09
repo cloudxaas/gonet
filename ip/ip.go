@@ -1,7 +1,7 @@
 package cxnetip
 
 import (
-	"net"
+	"net/netip"
 )
 
 // ValidateIPv4Address validates the given IPv4 address in string format
