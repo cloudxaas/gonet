@@ -1,5 +1,9 @@
 package cxnetip
 
+import (
+	"net/netip"
+)
+
 func AppendSortedIPPrefixSlices(sorted *[]netip.IPPrefix, ipPrefix netip.IPPrefix) {
 	if len(*sorted) == 0 {
 		*sorted = append(*sorted, ipPrefix)
