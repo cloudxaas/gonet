@@ -4,7 +4,7 @@ import (
 	"net/netip"
 )
 
-func AppendSortedNetIPSlices(sorted *[]netip.Addr, ip netip.Addr) {
+func AppendSortedNetIPPrefixSlices(sorted *[]netip.Prefix, ip netip.Prefix) {
 	if len(*sorted) == 0 {
 		*sorted = append(*sorted, ip)
 		return
@@ -16,22 +16,22 @@ func AppendSortedNetIPSlices(sorted *[]netip.Addr, ip netip.Addr) {
 
 	for left <= right {
 		mid = left + (right-left)/2
-		if (*sorted)[mid] == ip {
+		if (*sorted)[mid].Contains(ip.Addr()) {
 			return
-		} else if (*sorted)[mid].Less(ip) {
+		} else if (*sorted)[mid].Addr().Less(ip.Addr()) {
 			left = mid + 1
 		} else {
 			right = mid - 1
 		}
 	}
 
-	// Append a zero-value Addr to the end of the slice
-	*sorted = append(*sorted, (netip.Addr{}))
+	// Append the new Prefix to the end of the slice
+	*sorted = append(*sorted, netip.Prefix{})
 
 	// Shift the elements to the right of the insertion point one position to the right
 	copy((*sorted)[left+1:], (*sorted)[left:len(*sorted)-1])
 
-	// Insert the new Addr at the insertion point
+	// Insert the new Prefix at the insertion point
 	(*sorted)[left] = ip
 }
 
