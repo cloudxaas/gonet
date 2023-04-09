@@ -96,22 +96,24 @@ type IpRange struct {
 	end   net.IP
 }
 
-func ListContainsIP(ipList []*net.IPNet, ip net.IP) uint8 {
+func ListContainsIP(ipList []netip.IPPrefix, ip netip.Addr) uint8 {
 	for _, block := range ipList {
 		if block.Contains(ip) {
-			return 0
+			return 1
 		}
 	}
-	return 1
+	return 0
 }
 
-func Listv4or6ContainsIP(ipListv4 []*net.IPNet, ipListv6 []*net.IPNet, ip net.IP) uint8 {
-  if Is4(ip) == 1 {
-    return ListContainsIP(ipListv4,ip) //returns 1 if true
-  }
-	if ListContainsIP(ipListv6,ip) == 1 {
-		return 2
+func Listv4or6ContainsIP(ipListv4 []netip.IPPrefix, ipListv6 []netip.IPPrefix, ip netip.Addr) uint8 {
+	if ip.Is4() {
+		if ListContainsIP(ipListv4, ip) == 1 {
+			return 1 // IPv4 and found in the list
+		}
+	} else {
+		if ListContainsIP(ipListv6, ip) == 1 {
+			return 2 // IPv6 and found in the list
+		}
 	}
-  return 0
+	return 0 // Not found in either list
 }
-
