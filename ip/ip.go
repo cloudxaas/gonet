@@ -4,7 +4,6 @@ import (
 	"net"
 )
 
-
 // ValidateIPv4Address validates the given IPv4 address in string format
 func Is4String(ipv4 string) uint8 {
 	var (
@@ -54,29 +53,6 @@ func Is4String(ipv4 string) uint8 {
 	return 1
 }
 
-func ToBytes(ip net.IP) []byte {
-    if ip4 := ip.To4(); ip4 != nil {
-        b := make([]byte, net.IPv4len)
-        copy(b, ip4)
-        return b
-    }
-    ip16 := ip.To16()
-    b := make([]byte, net.IPv6len)
-    copy(b, ip16)
-    return b
-}
-
-func ToIP(bytes []byte) net.IP {
-    if len(bytes) == net.IPv4len {
-        b := make([]byte, net.IPv4len)
-        copy(b, bytes)
-        return net.IPv4(b[0], b[1], b[2], b[3])
-    }
-    b := make([]byte, net.IPv6len)
-    copy(b, bytes)
-    return net.IP(b)
-}
-
 // ValidateIPv6Address validates the given IPv6 address in string format
 func Is6String(ipv6 string) uint8 {
 	var (
@@ -124,39 +100,12 @@ func Is6String(ipv6 string) uint8 {
 }
 
 
-
-// IsValidIPv4 checks if an IPv4 address is valid
-func Is4(ip net.IP) uint8 {
-	if ip.To4() == nil {
-		return 0
-	}
-	return 1
-	
-}
-
-// IsValidIPv6 checks if an IPv6 address is valid
-func Is6(ip net.IP) uint8 {
-	if ip.To4() != nil {
-		return 0
-	}
-	if ip.To16() == nil {
-		return 0
-	}
-	return 1
-}
-
 // IsValidIP checks if an IP address is valid, returns the IP version
-func IsIP(ip net.IP) (uint8, uint8) {
-	if ip.To4() != nil {
-		if Is4(ip) != 1 {
-			return 0, 1
-		}
+func IsIP(ip netip.Addr) (uint8, uint8) {
+	if Is4(ip) != 1 {
 		return 4, 0
 	}
-	if ip.To16() != nil {
-		if Is6(ip) != 1 {
-			return 0, 1
-		}
+	if Is6(ip) != 1 {
 		return 6, 0
 	}
 	return 0, 1
