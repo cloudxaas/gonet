@@ -37,7 +37,7 @@ func IsDomainName(domain string) bool {
 
 
 func IPFromXFF(header []byte) netip.Addr {
-	if len(header) == 0 {
+	if len(header) < 7 {
 		return netip.Addr{}
 	}
 
