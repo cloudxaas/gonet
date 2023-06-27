@@ -110,3 +110,19 @@ func IsIP(ip netip.Addr) (uint8, uint8) {
 	}
 	return 0, 1
 }
+
+
+func IPv4or6IPRange(ipRange string) uint8 {
+	_, ipnet, err := net.ParseCIDR(ipRange)
+	if err != nil {
+		//fmt.Printf("Error parsing range: %v\n", err)
+		return 0
+	}
+
+	if ipnet.IP.To4() != nil {
+		return 1
+	} else {
+		return 2
+		//fmt.Printf("The IP range %s is an IPv6 range.\n", ipRange)
+	}
+}
