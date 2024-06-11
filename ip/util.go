@@ -4,7 +4,7 @@ import (
 	"net/netip"
 )
 
-func ipAddrAsSlice(ip net.IP) [16]byte {
+func IPAddrAsSlice(ip net.IP) [16]byte {
 	var arr [16]byte
 	copy(arr[:], ip.To16())
 	return arr
