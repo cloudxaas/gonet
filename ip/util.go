@@ -5,35 +5,33 @@ import (
 )
 
 func AppendSortedNetIPPrefixSlices(sorted *[]netip.Prefix, ip netip.Prefix) {
-	if len(*sorted) == 0 {
-		*sorted = append(*sorted, ip)
-		return
-	}
+        if len(*sorted) == 0 {
+                (*sorted)[0] = ip
+                *sorted = (*sorted)[:1] // Correct the slice length
+                return
+        }
+        var left, right, mid int
+        left = 0
+        right = len(*sorted) - 1
+        for left <= right {
+                mid = left + (right-left)/2
+                if (*sorted)[mid].Contains(ip.Addr()) {
+                        return
+                } else if (*sorted)[mid].Addr().Less(ip.Addr()) {
+                        left = mid + 1
+                } else {
+                        right = mid - 1
+                }
+        }
 
-	var left, right, mid int
-	left = 0
-	right = len(*sorted) - 1
+        // Ensure we stay within the slice bounds
+        *sorted = (*sorted)[:len(*sorted)+1] // Extend the slice length to accommodate the new element
 
-	for left <= right {
-		mid = left + (right-left)/2
-		if (*sorted)[mid].Contains(ip.Addr()) {
-			return
-		} else if (*sorted)[mid].Addr().Less(ip.Addr()) {
-			left = mid + 1
-		} else {
-			right = mid - 1
-		}
-	}
-
-	// Append the new Prefix to the end of the slice
-	*sorted = append(*sorted, netip.Prefix{})
-
-	// Shift the elements to the right of the insertion point one position to the right
-	copy((*sorted)[left+1:], (*sorted)[left:len(*sorted)-1])
-
-	// Insert the new Prefix at the insertion point
-	(*sorted)[left] = ip
+        // Manually shift elements to avoid using append (which may allocate)
+        copy((*sorted)[left+1:], (*sorted)[left:len(*sorted)-1])
+        (*sorted)[left] = ip
 }
+
 
 func IsPrivateSubnet(ipAddress netip.Addr) uint8 {
 	if ipAddress != (netip.Addr{}) {
