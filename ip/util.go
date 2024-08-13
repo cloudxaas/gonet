@@ -53,24 +53,10 @@ func InRange(r IpRange, ip netip.Addr) uint8 {
 	return 0
 }
 
-var PrivateRanges = []IpRange{
-	IpRange{
-		start: netip.MustParseAddr("10.0.0.0"),
-		end:   netip.MustParseAddr("10.255.255.255"),
-	},
-	IpRange{
-		start: netip.MustParseAddr("172.16.0.0"),
-		end:   netip.MustParseAddr("172.31.255.255"),
-	},
-	IpRange{
-		start: netip.MustParseAddr("192.168.0.0"),
-		end:   netip.MustParseAddr("192.168.255.255"),
-	},
-}
-
-type IpRange struct {
-	start netip.Addr
-	end   netip.Addr
+var PrivateRanges = []netip.Prefix{
+	netip.MustParsePrefix("10.0.0.0/8"),
+	netip.MustParsePrefix("172.16.0.0/12"),
+	netip.MustParsePrefix("192.168.0.0/16"),
 }
 
 func ListContainsIP(ipList []netip.Prefix, ip netip.Addr) uint8 {
