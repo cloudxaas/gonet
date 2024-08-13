@@ -82,13 +82,13 @@ func ListContainsIP(ipList []netip.Prefix, ip netip.Addr) uint8 {
 	return 0
 }
 
-func Listv4or6ContainsIP(ipListv4 []netip.Prefix, ipListv6 []netip.Prefix, ip netip.Addr) uint8 {
+func Listv4or6ContainsIP(ipListv4, ipListv6 []netip.Prefix, ip netip.Addr) uint8 {
 	if ip.Is4() {
-		if ListContainsIP(ipListv4, ip) == 1 {
+		if ListContainsIP(ipListv4, ip) {
 			return 1 // IPv4 and found in the list
 		}
-	} else {
-		if ListContainsIP(ipListv6, ip) == 1 {
+	} else if ip.Is6() {
+		if ListContainsIP(ipListv6, ip) {
 			return 2 // IPv6 and found in the list
 		}
 	}
