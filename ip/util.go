@@ -4,12 +4,6 @@ import (
 	"net/netip"
 )
 
-func IPAddrAsSlice(ip net.IP) [16]byte {
-	var arr [16]byte
-	copy(arr[:], ip.To16())
-	return arr
-}
-
 func AppendSortedNetIPPrefixSlices(sorted *[]netip.Prefix, ip netip.Prefix) {
 	if len(*sorted) == 0 {
 		*sorted = append(*sorted, ip)
